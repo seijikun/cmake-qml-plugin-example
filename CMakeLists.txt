@@ -10,12 +10,15 @@ find_package(Qt5 REQUIRED COMPONENTS Quick Core Qml)
 qt5_add_resources(APP_RESOURCES ${CMAKE_CURRENT_LIST_DIR}/src/qml/app.qrc)
 
 # We're using ${PROJECT_NAME} for target name but it's not necessary
-add_executable(
-    ${PROJECT_NAME}
-    src/main.cpp        # Our example project consists only of one .cpp file
-
-    ${APP_RESOURCES}    # App resources file
-)
+if(ANDROID)
+	add_library(${PROJECT_NAME} SHARED src/main.cpp ${APP_RESOURCES})
+else()
+	add_executable(
+		${PROJECT_NAME}
+		src/main.cpp        # Our example project consists only of one .cpp file
+		${APP_RESOURCES}    # App resources file
+	)
+endif()
 
 target_compile_features(
     ${PROJECT_NAME}
